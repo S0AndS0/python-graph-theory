@@ -74,7 +74,7 @@ edge_cost(base_cost = travel_estimate, drivers = 2)
 ```
 
 
-> What I'm asking of `edge_cost` might also be able to be expressed as $ e{\left( c, d \right)} = d \times c $, though one _gotcha_ (if I remember correctly), is that $\text{`pythonLambda`} {\ne} {lambda}$, because a Python `lambda` can be asked to do things that don't quite translate cleanly the other-way-round.
+> What I'm asking of `edge_cost` might also be able to be expressed as \( e{\left( c, d \right)} = d \times c \), though one _gotcha_ (if I remember correctly), is that \( \text{`pythonLambda`} {\ne} {lambda} \), because a Python `lambda` can be asked to do things that don't quite translate cleanly the other-way-round.
 
 
 - _Differing_ execution/calculations of `X` and `O`, or in this case `first` and `business` _class tickets_.
@@ -103,10 +103,10 @@ for key, customer in customers.items():
 These states a `Point` for the most part _totally doesn't care about_ from it's frame of reference as a destination that agents leave. At most in the second of the last to examples it would only _care_ about getting it's output by feeding a `first class function` call. One way to look at is maybe a `Point` could be like a dispatcher (a stationary agent) who keeps a roaster of other agents in town and maybe picks up calls (_if they _must_, and it's not a Monday_), from agents about recent traveling conditions after arriving at a neighbor. Defined this way a `Point` could intentionally give bad information to another agent.
 
 
-> Maybe $v$ has never gotten along with $S_{1}$ and will happily _low-ball_ any travel cost estimates given to that agent, maybe $S_{1}$ doesn't figure this out till the end `n` of a _pay periods_ when their _gas_ cost vs. compensation are not as they expected. How $v$'s' and $S_{1}$'s _personalities_ cause them to _mess_ with one another I think are within the _scope_ of a `Point`.
+> Maybe $v$ has never gotten along with \( S_{1} \) and will happily _low-ball_ any travel cost estimates given to that agent, maybe \( S_{1} \) doesn't figure this out till the end `n` of a _pay periods_ when their _gas_ cost vs. compensation are not as they expected. How \(v\)'s' and \( S_{1} \)'s _personalities_ cause them to _mess_ with one another I think are within the _scope_ of a `Point`.
 
 
-If you wish to question an edge I think it maybe helpful to re-frame an edge (define a `class`) as the points that are populated on an edge, so that things can be asked about those on an edge. This isn't to say that an edge must contain every point between, computers and $\infty$ usually don't mix, but instead an edge could have a way of calculating things like distances between agents or their destination.
+If you wish to question an edge I think it maybe helpful to re-frame an edge (define a `class`) as the points that are populated on an edge, so that things can be asked about those on an edge. This isn't to say that an edge must contain every point between, computers and \( \infty \) usually don't mix, but instead an edge could have a way of calculating things like distances between agents or their destination.
 
 
 >> But it seems to me that the point class can only model edges with a constant cost?
@@ -210,6 +210,8 @@ Inheriting from `Point` we gain the `super` powers of pre-processing `cheapest` 
 
 
 > In other-words, to those yelling at their monitor, right now the focus is optimizing for developer's time and not code execution time; releasing [`pandas`](https://pandas.pydata.org) or other libraries and optimizing code can wait till the problem is _fleshed-out_ from components with well defined inputs and outputs.
+>
+> Or in other-other-words _try not to get too attached_ to the inner code because that __should__ change as a project grows.
 
 
 Importing the `Construction` point if saved under `points/construction.py` could then look like...
