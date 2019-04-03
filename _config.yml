@@ -11,7 +11,7 @@ github_username:  S0AndS0
 
 # Build settings
 markdown: kramdown
-mathjax: true
+# mathjax: true
 theme: minima
 plugins:
   - jekyll-feed
