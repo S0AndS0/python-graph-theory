@@ -4,7 +4,7 @@ title:  "Points 00 Preface"
 date:   2019-04-02 06:05:58 -0700
 categories: graph
 ---
-{% include mathjax.html %}
+{%- include mathjax.html -%}
 
 
 > This set of posts was inspired by [modeling congestion games in Python without tons of for loop](https://math.stackexchange.com/questions/3130866/modelling-congestion-games-in-python-without-tons-of-for-loop) question.

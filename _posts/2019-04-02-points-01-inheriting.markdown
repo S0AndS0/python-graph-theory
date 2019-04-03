@@ -3,9 +3,8 @@ layout: post
 title:  "Points 01 Inheriting"
 date:   2019-04-02 07:05:58 -0700
 categories: graph
-mathjax: true
 ---
-{% include mathjax.html %}
+{%- include mathjax.html -%}
 
 
 > If this is your first time here then it might be a good idea to review the [previous post][previous-post], and for everyone let the following _sketch_ be a quick refresher of the portion of the graph that is being modeled...
