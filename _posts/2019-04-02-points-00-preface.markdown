@@ -7,7 +7,7 @@ categories: graph
 {% include mathjax.html %}
 
 
-Inspired by [modeling congestion games in Python without tons of for loop](https://math.stackexchange.com/questions/3130866/modelling-congestion-games-in-python-without-tons-of-for-loop)
+> This set of posts was inspired by [modeling congestion games in Python without tons of for loop](https://math.stackexchange.com/questions/3130866/modelling-congestion-games-in-python-without-tons-of-for-loop) question.
 
 {% comment %}
 <img src="{ /assets/graph_images/Graph_UVW.png | relative_url }" alt="Please imagine a three pointed bidirectional graph with points labeled U V W" max-width="200" max-height="200">
@@ -60,8 +60,9 @@ $$
 ```python
 #!/usr/bin/env python
 from __future__ import absolute_import, division, print_function
-# ... Above _unlocks_ some compatibility _magics_
-#     for running within Python 2 or 3
+# ... Above _unlocks_ some compatibility _magics_ for
+#     running within Python 2 or 3. Not required at
+#     this point but there as hint for when it will be.
 
 import sys
 sys.dont_write_bytecode = True
@@ -129,7 +130,7 @@ if __name__ == '__main__':
 
 ___
 
-> To the mathematically educated, I'd really like to see how to write a similar model through pure math, so feel free to edit this section here with something beautiful.
+> To the mathematically educated, I'd really like to see how to write a similar model through pure math, so feel free to edit this section here with a `fork` and `pull request` or open an [issue][got-issues] with something beautiful.
 
 ___
 
@@ -203,3 +204,4 @@ ___
 
 {% capture next_post %}{%- post_url 2019-04-02-points-01-inheriting -%}{% endcapture %}
 [next-post]: {{ next_post | relative_url }}
+[got-issues]: https://github.com/S0AndS0/python-graph-theory/issues/
