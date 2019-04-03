@@ -20,7 +20,7 @@ At it's core this site's documentation is built in large part thanks to the [Jek
 ## ... contributers
 
 
-- [Raven Cheuk](https://math.stackexchange.com/users/647646/raven-cheuk) who asked a [question](https://math.stackexchange.com/questions/3130866/modelling-congestion-games-in-python-without-tons-of-for-loop) only to find so many more ways to _interrogate_ a problem for answers.
+- [Raven Cheuk](https://math.stackexchange.com/users/647646/raven-cheuk) who asked a [question](https://math.stackexchange.com/questions/3130866/modelling-congestion-games-in-python-without-tons-of-for-loop) only to find so many more ways to _interrogate_ a problem for [answers][points-posts].
 
 
 {% comment %}
@@ -37,3 +37,6 @@ Note to Raven Cheuk, feel free to edit that above when you've the chance and des
 [mathjax]: https://docs.mathjax.org/en/latest/start.html
 [liquid]: https://github.com/Shopify/liquid
 [about-pull-requests]: https://help.github.com/en/articles/about-pull-requests
+
+{% capture next_post %}{ post_url 2019-04-02-points-02-futures }{% endcapture %}
+[points-posts]: {{ next_post | relative_url }}
