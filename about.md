@@ -38,5 +38,5 @@ Note to Raven Cheuk, feel free to edit that above when you've the chance and des
 [liquid]: https://github.com/Shopify/liquid
 [about-pull-requests]: https://help.github.com/en/articles/about-pull-requests
 
-{% capture next_post %}{{} post_url 2019-04-02-points-00-inheriting }}{% endcapture %}
-[points-posts]: {{ next_post | relative_url }}
+{% capture points_posts %}{{ post_url 2019-04-02-points-00-inheriting }}{% endcapture %}
+[points-posts]: {{ points_posts | relative_url }}
