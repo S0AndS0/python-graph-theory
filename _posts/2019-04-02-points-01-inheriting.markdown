@@ -264,9 +264,10 @@ days = 2
 day_count = 0
 for i in range(hours_start, (hours_end * days) + 1, hours_step):
     for address, point in points.items():
-        # ... This `try`/`except` syntax is known as
-        #     "asking forgiveness" _dig_ into previous
-        #     edits for a "asking permission" version ;-)
+        # ... This `try`/`except` syntax is some times
+        #     called "asking forgiveness", where as
+        #     using `if` for setting `current_hour`
+        #     would be called "asking permission" ;-)
         try:
             current_hour = point['current_hour']
         except KeyError:
