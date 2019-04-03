@@ -59,7 +59,7 @@ I believe that the total cost is a result of a function that takes `points['w'][
 Here's two quick examples of how that could look in Python using `lambda`s...
 
 
-_Masking_ saved `cost` states
+- _Masking_ saved `cost` states
 
 
 ```python
@@ -75,7 +75,7 @@ edge_cost(base_cost = travel_estimate, drivers = 2)
 > What I'm asking of `edge_cost` might also be able to be expressed as $ e{\left( c, d \right)} = d \times c $, though one _gotcha_ (if I remember correctly), is that $\text{`pythonLambda`} {\ne} {lambda}$, because a Python `lambda` can be asked to do things that don't quite translate cleanly the other-way-round.
 
 
-_Differing_ execution/calculations of `X` and `O`, or in this case `first` and `business` _class tickets_.
+- _Differing_ execution/calculations of `X` and `O`, or in this case `first` and `business` _class tickets_.
 
 
 ```python
