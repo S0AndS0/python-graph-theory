@@ -6,10 +6,22 @@ categories: hybrid_iterator
 ---
 {%- include mathjax.html -%}
 
+{% capture root_post %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
+[root-post]: {{ root_post | relative_url }}
+
+> This set of posts was inspired by [Smart enumeration of a subset of graphs obtained from a parent graph](https://math.stackexchange.com/questions/2389734/smart-enumeration-of-a-subset-of-graphs-obtained-from-a-parent-graph) question.
+>
+> If this is your first time it might be useful to review the [first post][root-post] of this series.
+
+
+___
+
 
 ## Advanced Usage
 
+
 I've updated the `try`/`else` block of code some to hopefully allow for an easier time of perhaps applying $R$ as a `modifier`, hint `self['buffer'].update(buffer['modifier'](next_sub_graph))`, here's a quick example...
+
 
 ```python
 def populate(sub_graph):
@@ -29,9 +41,13 @@ def populate(sub_graph):
 
 buffer['modifier'] = point_populate
 ```
+
+
 > Note assigning to `modifier` may also be done at initialization too.
 
+
 ... so doing the same loop over `buffer` (once `buffer['graph']` has been refilled and `buffer['priority']['GE_bound']` reset) should now produce results similar to...
+
 
 ```
 Chunk 0 of ~ 4
@@ -51,9 +67,12 @@ Chunk 0 of ~ 4
 #...
 ```
 
+
 ... the `populate` function is being called only on those who are within the priority range!
 
+
 > As there maybe some following along with an empty `buffer['graph']`, here's how to repopulate and re-set bits within `buffer` for re-looping...
+
 
 ```
 buffer['modifier'] = populate
