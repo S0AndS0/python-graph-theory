@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, print_function
 import sys
 sys.dont_write_bytecode = True
 
-from hybrid_iterator import Hybrid_Iterator
+from __init__ import Hybrid_Iterator
 
 license = """
 Python class for modeling Points of simple graphs.
@@ -31,23 +31,25 @@ class Priority_Buffer(Hybrid_Iterator):
     ## Arguments
 
     - `graph`, with `{name: sub_graph}` and `sub_graph[key_name]` to compare
-    - `buffer_size`, `int` of desired `{name: sub_graph}` pares to buffer
+    - `buffer_size`, `int` of desired `{name: sub_graph}` pairs to buffer
     - `priority`, dictionary containing the following data structure
         - `key_name`, withing `graph` to compare with `_bound`s bellow
         - `GE_bound`, buffers those greater than or equal to `graph[key_name]`
         - `LE_bound`, buffers those less than or equal to `graph[key_name]`
-    - `step`, dictionary containing the following `{key: value}` pares
+    - `step`, dictionary containing the following `{key: value}` pairs
         - `amount`, to increment or decrement `_bound`s to ensure full buffer
         - `GE_min`/`LE_max`, bounds the related `_bounds` above
+    - `modifier` if set __must__ accept `{key: value}` pairs from `graph`
     """
 
-    def __init__(self, graph, priority, buffer_size, step, **kwargs):
+    def __init__(self, graph, priority, buffer_size, step, modifier = None, **kwargs):
         super(Priority_Buffer, self).__init__(**kwargs)
         self.update(
             graph = graph,
             priority = priority,
             buffer_size = buffer_size,
             step = step,
+            modifier = modifier,
             buffer = {})
 
     @property
@@ -62,6 +64,9 @@ class Priority_Buffer(Hybrid_Iterator):
         if len(self['graph'].keys()) <= 0:
             return True
 
+        # ... Note `\` ignores new-lines so that
+        #     the following compound checks do not
+        #     require excessive side-scrolling...
         if self['step'].get('GE_min') is not None:
             if self['priority']['GE_bound'] < self['step']['GE_min']:
                 return True
@@ -92,10 +97,12 @@ class Priority_Buffer(Hybrid_Iterator):
             if self['priority'].get('GE_bound') is not None:
                 if node[key_name] >= self['priority']['GE_bound']:
                     yield {name: graph.pop(name)}
-            # ... Priorities less or equal to some bound
+              # ... Priorities less or equal to some bound
             elif self['priority'].get('LE_bound') is not None:
                 if node[key_name] <= self['priority']['LE_bound']:
                     yield {name: graph.pop(name)}
+            else:
+                raise ValueError('Misconfiguration, either `GE_`/`LE_bound`s ')
 
         self.throw(GeneratorExit)
 
@@ -111,7 +118,7 @@ class Priority_Buffer(Hybrid_Iterator):
         while not self.is_buffered:
             try:
                 # ... to get next priority
-                self['buffer'].update(priority_gen.next())
+                next_sub_graph = priority_gen.next()
             except (StopIteration, GeneratorExit):
                 # ... that we have run out items within
                 #     the current bounds, so _step_ in prep
@@ -119,14 +126,19 @@ class Priority_Buffer(Hybrid_Iterator):
                 if self['priority'].get('GE_bound'):
                     self['priority']['GE_bound'] += self['step']['amount']
                     priority_gen = self.top_priority()
+                    # ... Note `priority_gen` re-assignments are
+                    #     a good place for future optimization.
                 elif self['priority'].get('LE_bound'):
                     self['priority']['LE_bound'] += self['step']['amount']
                     priority_gen = self.top_priority()
                 else:
                     raise ValueError("self['priority'] missing bounds")
             else:
-                # ... updated `buffer` successfully! So
-                pass
+                # ... got `next_sub_graph` successfully! So
+                try:
+                    self['buffer'].update(self['modifier'](next_sub_graph))
+                except TypeError:
+                    self['buffer'].update(next_sub_graph)
                 #     though this is a good spot
                 #     for pre-processing too...
             finally:
