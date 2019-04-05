@@ -24,6 +24,9 @@ Your idea sounds smart for prioritizing computation of unordered (and possibly m
 The best way that I know how to express this is in Python, I'll try to keep it to a minimum as far as script size while also only using/inheriting built-ins so that the _technical-debt_ (a measure of having to understand sets of $library_{dependency}$ before even beginning to code), for readers is kept to a minimum too. A balancing act but at least what I share is very generalizable.
 
 
+___
+
+
 ## `hybrid_iterator/__init__.py`
 
 
@@ -101,6 +104,9 @@ $$
 
 
 Above is nothing overly _special_ on it's own, in fact without modification it's in someways a worse dictionary than it was before. Hint, compare the lists of methods available for each via `dir()`, eg `dir(Hybrid_Iterator)` to see it's _inner bits_ that can be called upon... But let's not get lost in the details, instead get past the prereqs, and on to the proof of concept code and it's usage.
+
+
+___
 
 
 ## `priority_buffer.py`
@@ -317,6 +323,7 @@ for k, v in graph.items():
 # Graph_5 -> {'points': {}, 'first_to_compute': 8}
 # ...
 ```
+
 
 The `first_to_compute` keys are what are going to be used soon and I hope readers like it, doesn't really matter what you call this key so long as you're consistent between above and bellow `code` blocks. The `sub_graph`s `key` names are unimportant for these examples as dictionaries are unordered, only serving as a _hash_ for look-ups. The `points` are just place-holders to show that more than one key value pair are allowed in a dictionary; well so long as the keys are unique. Note nesting `dict`s is often easer than getting data back out without forethought though so this should not be used in production without significant modifications.
 
