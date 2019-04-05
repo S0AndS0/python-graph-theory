@@ -205,6 +205,8 @@ if __name__ == '__main__':
     raise Exception("No Construction points detected.")
 ```
 
+> Note, a near identical version of [`points/construction.py`](https://github.com/S0AndS0/python-graph-theory/blob/6b58030250e6a23789d698ea71f0e115409bff2f/python_examples/graph/points/construction.py) is available for download.
+
 
 Inheriting from `Point` we gain the `super` powers of pre-processing `cheapest` within the scope of `Construction.cheapest` method. Yes that also means there's now some `for` loop stacking, but the above is just an example of using the _scope_ stacking that Python almost expects of authors, while also addressing one way to have changing `cost` calculations done by a point.
 

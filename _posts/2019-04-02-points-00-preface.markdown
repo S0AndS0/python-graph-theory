@@ -128,6 +128,8 @@ if __name__ == '__main__':
     raise Exception("No points have been made!")
 ```
 
+> Note, a near identical version of [`points/__init__.py`](https://github.com/S0AndS0/python-graph-theory/blob/6b58030250e6a23789d698ea71f0e115409bff2f/python_examples/graph/points/__init__.py) is available for download.
+
 ___
 
 > To the mathematically educated, I'd really like to see how to write a similar model through pure math, so feel free to edit this section here with a `fork` and `pull request` or open an [issue][got-issues] with something beautiful.
