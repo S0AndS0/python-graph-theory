@@ -1,8 +1,8 @@
-// Keeps long code blocks under controll
+/**  Attempt to keep long code blocks under controll */
 pre, code {
     max-height: 480px;
     max-height: 80vw;
     overflow-y: auto;
 }
 
-@debug "## code-formating.scss finished.";
+// @debug "## code-formating.scss finished.";
