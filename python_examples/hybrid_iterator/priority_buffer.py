@@ -97,7 +97,7 @@ class Priority_Buffer(Hybrid_Iterator):
             if self['priority'].get('GE_bound') is not None:
                 if node[key_name] >= self['priority']['GE_bound']:
                     yield {name: graph.pop(name)}
-              # ... Priorities less or equal to some bound
+            # ... Priorities less or equal to some bound
             elif self['priority'].get('LE_bound') is not None:
                 if node[key_name] <= self['priority']['LE_bound']:
                     yield {name: graph.pop(name)}
@@ -202,4 +202,53 @@ if __name__ == '__main__':
         if counter > c_max:
             raise Exception("Hunt for bugs!")
 
-    print("Finished unit tests.\n{0}".format("".join(['_' for x in range(9)])))
+    print("Finished first unit tests.\n{0}".format("".join(['_' for x in range(9)])))
+
+    print("Starting second unit tests.\n{0}".format("".join(['_' for x in range(9)])))
+
+    # ... This is just an example function
+    #     for use as a `modifier`
+    def populate(sub_graph):
+        """
+        Expects `{'hash': {'key': None}}` structure where `key` needs a population
+        """
+        key = 'points'
+        hash = sub_graph.keys()[0]
+        for x in range(randint(2, 5)):
+            sub_graph[hash][key].update(
+                {
+                    "point_{0}".format(x): randint(200, 500),
+                }
+            )
+
+        return sub_graph
+
+    buffer['modifier'] = populate
+    buffer['priority']['GE_bound'] = 7
+    print("Re-polulating `buffer['graph']`.\n{0}".format("".join(['_' for x in range(9)])))
+    for i in range(0, 21, 1):
+        buffer['graph'].update({
+            "sub_graph_{0}".format(i): {
+                'points': {},
+                'first_to_compute': randint(0, 9),
+            }
+        })
+
+    print("Iterating over sample graph while populating sub-graphs.\n{0}".format("".join(['_' for x in range(9)])))
+    counter = 0
+    c_max = int(len(graph.keys()) / buffer['buffer_size'] + 1)
+    # ... (21 / 5) + 1 -> int -> 5
+    for chunk in buffer:
+        print("Chunk {count} of ~ {max}".format(
+            count = counter, max = c_max - 1))
+
+        for key, val in chunk['buffer'].items():
+            print("\t{k} -> {v}".format(**{
+                'k': key, 'v': val}))
+
+        counter += 1
+
+        if counter > c_max:
+            raise Exception("Hunt for bugs!")
+
+    print("Finished second unit tests.\n{0}".format("".join(['_' for x in range(9)])))
