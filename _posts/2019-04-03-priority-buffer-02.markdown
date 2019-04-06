@@ -6,8 +6,10 @@ categories: hybrid_iterator
 ---
 {%- include mathjax.html -%}
 
+
 {% capture root_post %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
 [root-post]: {{ root_post | relative_url }}
+
 
 > This set of posts was inspired by [Smart enumeration of a subset of graphs obtained from a parent graph](https://math.stackexchange.com/questions/2389734/smart-enumeration-of-a-subset-of-graphs-obtained-from-a-parent-graph) question.
 >
@@ -43,7 +45,7 @@ buffer['modifier'] = point_populate
 ```
 
 
-> Note assigning to `modifier` may also be done at initialization too.
+> Note assigning a `modifier` may also be done at initialization too.
 
 
 ... so doing the same loop over `buffer` (once `buffer['graph']` has been refilled and `buffer['priority']['GE_bound']` reset) should now produce results similar to...
@@ -74,7 +76,7 @@ Chunk 0 of ~ 4
 > As there maybe some following along with an empty `buffer['graph']`, here's how to repopulate and re-set bits within `buffer` for re-looping...
 
 
-```
+```python
 buffer['modifier'] = populate
 buffer['priority']['GE_bound'] = 7
 
@@ -85,4 +87,23 @@ for i in range(0, 21, 1):
             'first_to_compute': randint(0, 9),
         }
     })
+```
+
+
+> ... and re-looping would be much like it was before
+
+```python
+counter = 0
+c_max = int(len(graph.keys()) / buffer['buffer_size'] + 1)
+
+
+for chunk in buffer:
+    print("Chunk {0} of ~ {1}".format(counter, c_max - 1))
+
+    for key, val in chunk['buffer'].items():
+        print("\t{0} -> {1}".format(key, val))
+
+    counter += 1
+    if counter > c_max:
+        raise Exception("Hunt for bugs!")
 ```
