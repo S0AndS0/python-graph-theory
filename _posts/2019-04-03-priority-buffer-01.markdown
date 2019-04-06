@@ -6,12 +6,15 @@ categories: hybrid_iterator
 ---
 {%- include mathjax.html -%}
 
+
 {% capture root_post %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
 [root-post]: {{ root_post | relative_url }}
+
 
 > This set of posts was inspired by [Smart enumeration of a subset of graphs obtained from a parent graph](https://math.stackexchange.com/questions/2389734/smart-enumeration-of-a-subset-of-graphs-obtained-from-a-parent-graph) question.
 >
 > If this is your first time it might be useful to review the [first post][root-post] of this series.
+
 
 ___
 
@@ -179,7 +182,7 @@ graph = {
 > The values for `node[key_name]` could also be retrieved directly from `buffer` an instance of `Priority_Buffer` via...
 
 
-```
+```python
 buffer['graph']['Graph_4']['first_to_compute']
 # -> 0
 buffer['graph']['Graph_7']['first_to_compute']

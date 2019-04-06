@@ -6,7 +6,11 @@ categories: hybrid_iterator
 ---
 {%- include mathjax.html -%}
 
+
 > This set of posts was inspired by [Smart enumeration of a subset of graphs obtained from a parent graph](https://math.stackexchange.com/questions/2389734/smart-enumeration-of-a-subset-of-graphs-obtained-from-a-parent-graph) question.
+
+
+___
 
 
 I'll attempt to assist with the following bits...
@@ -31,6 +35,9 @@ ___
 
 
 Scroll past this code block and on to the next one, it's just a dependency to keep code clean and _mostly_ reliable.
+
+
+> Note the following script is available for [download](https://github.com/S0AndS0/python-graph-theory/blob/647903d1412df513f4f030b963e4b25d0ec3255e/python_examples/hybrid_iterator/__init__.py).
 
 
 ```python
@@ -273,6 +280,7 @@ if __name__ == '__main__':
     raise Exception("No priorities?")
 ```
 
+> Note the above script is available for [download](https://github.com/S0AndS0/python-graph-theory/blob/28faaa9a266604461a388426ea95d1f7b2e2a81c/python_examples/hybrid_iterator/priority_buffer.py).
 
 Indeed that was _some_ code so to cover the _what's_, _hows_, and _whys_ I'll try to put it into some context with usage examples.
 
