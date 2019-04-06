@@ -29,7 +29,7 @@ Otherwise feel free to leave questions in the comments section if there's someth
 ___
 
 
->> #### The business with `counter` and `c_max` was not clear. could you explain more?
+>> ### The business with `counter` and `c_max` was not clear. could you explain more?
 
 
 TLDR: _Usually_ Python'll error out, it's nicer than some languages that way, but not before those within ear-shot have new _vocab words_ for search queries. Both `if` statements and `while` loops are concerned with [truthiness](https://stackoverflow.com/questions/39983695/what-is-truthy-and-falsy-in-python-how-is-it-different-from-true-and-false), eg. they ask _"does $x$ = $y$?"_ (`1 == 0` `->` `False`) sorts of questions, _almost like_ a `decision tree`, so asking this `class` to check `LE_bound` while decrementing ($\neg{n}$) would cause some things to return `True` (that there's still data to read) but `False` that there's anything lower or equal to `n` after the first pass of it decrementing... and all passes after until _termination_.
@@ -143,10 +143,7 @@ If ya want a _moral_ to this story, _"AI starts with a loop that never exits"_, 
 Try _tracing_ the path of execution though one loop reading the code like sentences from a _choose your own destiny adventure_ starting at `def next(self)` (within the `Priority_Buffer` `class`), which is what `for chunk in buffer` calls implicitly. It might get to a point where, kinda like one of those _magic eye_ posters, things almost start making sense. Hint if ya get stuck and I'm not quick enough in an answer, see my tips list specifically the one with `print` _dumping_ values.
 
 
-___
-
-
->> #### ... the mechanics of priority buffer is a bit unclear. is it just a straightforward extension of priority queue or you have coded this data structure on your own. I could not find a mention of this data structure in any standard cs book.
+>> ### ... the mechanics of priority buffer is a bit unclear. is it just a straightforward extension of priority queue or you have coded this data structure on your own. I could not find a mention of this data structure in any standard cs book.
 
 
 - TLDR - CS: Likely where someone with full insight to both your data structure and Python's full _suite_ of features to _take a crack at_ this problem, the resulting code would use libraries and have a total line count of less than 30. __But__ that wouldn't really answer the _..."**`could someone show some work`**"..._ part of your question; which I was aiming for so as to call this answer complete. Nor would something like that give you much room for adjustments at nearly any level of the stack.
