@@ -22,9 +22,10 @@ At it's core this site's documentation is built in large part thanks to the [Jek
 
 - [Raven Cheuk](https://math.stackexchange.com/users/647646/raven-cheuk) who asked a [question](https://math.stackexchange.com/questions/3130866/modelling-congestion-games-in-python-without-tons-of-for-loop) only to find so many more ways to _interrogate_ a problem for [answers][points-posts].
 
+- [user-1-1-1](https://math.stackexchange.com/users/184201/user-1-1-1) who asked a [question](https://math.stackexchange.com/questions/2389734/smart-enumeration-of-a-subset-of-graphs-obtained-from-a-parent-graph) and got a [priority buffer][priority-buffer] proof-of-code [answer][priority-buffer-answer].
 
 {% comment %}
-Note to Raven Cheuk, feel free to edit that above when you've the chance and desire to do so.
+Note to contributers, feel free to edit that above when you've the chance and desire to do so.
 {% endcomment %}
 
 
@@ -42,5 +43,11 @@ Seems like every site has to address this somewhere these days, _quick-n-short o
 [liquid]: https://github.com/Shopify/liquid
 [about-pull-requests]: https://help.github.com/en/articles/about-pull-requests
 
+[priority-buffer]: https://github.com/S0AndS0/python-graph-theory/blob/28faaa9a266604461a388426ea95d1f7b2e2a81c/python_examples/hybrid_iterator/priority_buffer.py
+
 {% capture points_posts %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
 [points-posts]: {{ points_posts | relative_url }}
+
+
+{% capture priority_buffer_answer %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
+[priority-buffer-answer]: {{ priority_buffer_answer | relative_url }}
