@@ -80,7 +80,7 @@ class Point(dict):
     ## Arguments
 
     - `address` should be a unique identifier that can be used as a `key`
-    - `neighbors` should be a `dict` with `{address: cost}` key value pares
+    - `neighbors` should be a `dict` with `{address: cost}` key value pairs
       - `cost` should be a `float` or `int`
 
     > `address`es are the same regardless of scope
@@ -95,7 +95,7 @@ class Point(dict):
 
     def cheapest(self, routes = {}):
         """
-        Returns `dict` with '{address: cost}' key pares
+        Returns `dict` with '{address: cost}' key pairs
 
         > `routes` by default will read `self['neighbors']`
         """
