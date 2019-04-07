@@ -1,0 +1,244 @@
+---
+layout: post
+title:  "Agents 00"
+date:   2019-04-07 06:04:58 -0700
+categories: graph
+---
+{%- include mathjax.html -%}
+
+
+> If this is your first time here it might be a good idea to start at the [`Points`][points] series, and it also might be helpful to review the how the [`Hybrid_Iterator`][priority-buffer] `class` was used within the priority buffer series, because the `Agent` `class` will be inheriting from `Hybrid_Iterator`
+
+___
+
+
+## `Agent`s
+
+
+What I'll be asking of an `Agent` any time `next()` or `__next__()` is called, is to look at it's current `Point`'s `neighbors`, consider those that the `Agent` has not visited and set the one of those to `self['heading']`, then return it`self` for further consideration. When the `Agent` no longer has anywhere left to travel (without backtracking), they'll throw/`raise` the specified error object to signal to the calling process that the they're finished.
+
+
+> As a refresher here's a _sketch_ of `Hybrid_Iterator`'s `super` relationships with `dict` and `Iterator` `class`es
+
+
+$$
+\color{#CD8C00}{\fbox{ dict }{
+  \color{#2E8B57}{\xleftarrow[]{
+    \color{#000}{\text{super}_{\left(key\_word\_args\right)}}
+  }}
+  \over{\color{#CD8C00}{
+    \xrightarrow[\color{#000}{\text{returned value}}]{}
+  }}
+}}
+\color{#2E8B57}{\fbox{ Hybrid~Iterator }{
+  \color{#2E8B57}{\xrightarrow[]{
+    \color{#000}{\text{super}_{\left(key\_word\_args\right)}}
+  }}
+  \over{\color{#00A}{
+    \xleftarrow[\color{#000}{\text{returned value}}]{}
+  }}
+}}
+\color{#00A}{\fbox{ Iterator }}
+$$
+
+> And a _sketch_ of what the following code hopes to build
+
+$$
+\color{#2E8B57}{\fbox{ Hybrid~Iterator }{
+  \color{#8C0073}{\xleftarrow[]{
+    \color{#000}{\text{super}_{\left(key\_word\_args\right)}}
+  }}
+  \over{\color{#2E8B57}{
+    \xrightarrow[\color{#000}{\text{returned value}}]{}
+  }}
+}}
+\color{#8C0073}{\fbox{ Agent }}
+$$
+
+
+
+```python
+#!/usr/bin/env python
+from __future__ import absolute_import
+
+import sys
+sys.dont_write_bytecode = True
+
+from random import randint
+
+from hybrid_iterator import Hybrid_Iterator
+
+
+class Agent(Hybrid_Iterator):
+    """
+    Let `point` be a `Point` instance of where this `Agent` is currently
+    """
+
+    def __init__(self, name, point, **kwargs):
+        super(Agent, self).__init__(**kwargs)
+        self.update(
+            name = name,
+            point = point,
+            visited = [],
+            heading = {})
+
+    def set_heading(self, routes = None):
+        """
+        Sets `self['heading']` from unvisited `routes`
+        If multiple choices are available a random one is picked.
+        """
+        if not routes:
+            routs = self['point'].cheapest()
+
+        self['heading'] = {}
+        courses = {}
+        visited_addresses = [x.keys()[0] for x in self['visited']]
+        for address, cost in routes.items():
+            if address not in visited_addresses:
+                # ... Pop `{addr: cost}` pairs into
+                #     `courses` only from unvisited
+                courses.update({address: routes.pop(address)})
+
+        target_key = 0
+        if len(courses.keys()) > 1:
+            # ... choose a random heading if
+            #     multiple courses are available
+            target_key = randint(0, int(len(courses.keys()) - 1))
+
+        if courses:
+            address = courses.keys()[target_key]
+            self['heading'] = {address: courses.pop(address)}
+
+        return self['heading']
+
+    def next(self):
+        """
+        Calls `self.set_heading()` `raises` a `GeneratorExit`
+        when there is no where left to go.
+        """
+        self.set_heading()
+
+        if not self['heading']:
+            self.throw(GeneratorExit)
+
+        return self
+
+
+if __name__ == '__main__':
+    raise Exception("This file must be used as a module!")
+```
+
+
+By separating out the behavior of an `Agent` from the `next` calls, sub-classing custom a new agent with a different `set_heading` method _should_ be relatively easy, and not require too much editing of code further up the stack.
+
+
+In order to test more easily this new `class` that makes use of `Hybrid_Iterator` from a parent directory, a temporary script file should be written under the _root_ directory for the Python project, eg. `python_examples/bills_adventure.py`. The beginning of this file could look like the following...
+
+
+```python
+#!/usr/bin/env python
+
+import sys
+sys.dont_write_bytecode = True
+
+
+from graph.points import Point
+from graph.agents import Agent
+
+
+f_line = "".join(['_' for x in range(9)])
+
+
+print("{0}\nInitializing points of graph".format(f_line))
+X, O = (0.2, 0.7)
+points = {
+    'u': Point(address = 'u', neighbors = {'v': X, 'w': X}),
+    'v': Point(address = 'v', neighbors = {'u': O, 'w': X}),
+    'w': Point(address = 'w', neighbors = {'u': O, 'v': X}),
+}
+print("{0}\n{1}".format(points, f_line))
+```
+
+Initializing a set of four `Agents` could then look like...
+
+
+```python
+agents = {
+    'Bill': Agent(name = 'Bill', point = points['u']),
+    'Alice': Agent(name = 'Alice', point = points['u']),
+    'Tom': Agent(name = 'Tom', point = points['v']),
+    'Jain': Agent(name = 'Jain', point = points['w']),
+}
+```
+
+
+> Note, if ya wanted to update the `points` `population` with `name`s of `Agent`s that could look like.
+
+```python
+for agent in agents.values():
+    agent['point']['population'].append(agent['name'])
+```
+
+
+... and letting `Bill` _wander about_, safely, could look like...
+
+
+```python
+count = 0
+agent_key = 'Bill'
+
+for step in agents[agent_key]:
+    name = step['name']
+    here = step['point']['address']
+    there = step['heading'].keys()[0]
+    cost = step['heading'][there]
+
+    print("{name} paid {cost} to get from {here} to {there}".format(
+        name = name,
+        cost = cost,
+        here = here,
+        there = there))
+
+    points[here]['population'].remove(name)
+    points[there]['population'].append(name)
+    step['visited'].append({there: cost})
+    step['point'] = points[there]
+
+    count += 1
+    if count > 4:
+        raise Exception("Hunt for bugs!")
+
+
+print("Places that {0} has been -> {1}\n\tcurrently at -> at {2}".format(
+    agents[agent_key]['name'],
+    agents[agent_key]['visited'],
+    agents[agent_key]['point']['address']))
+```
+
+
+> That _business_ with `count` is __important__ for testing, without it the `for` loop _could_ loop indefinitely from some bug within the loop's or `Agent`'s code.
+
+
+... output may look something like...
+
+
+```
+Bill paid 0.2 to get from u to v
+Bill paid 0.2 to get from v to w
+Places that Bill has been -> [{'v': 0.2}, {'w': 0.2}]
+    currently at -> w
+```
+
+
+{% capture points_series %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
+[points]: {{ points_series | relative_url }}
+
+{% capture priority_buffer_series %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
+[priority-buffer]: {{ priority_buffer_series | relative_url }}
+
+{% comment %}
+I'll be addressing how to move more than one `Agent` at a time within the [`Graphs`][graphs] post series.
+
+{% capture graph_series %}{ post_url "" }{% endcapture %}
+[graphs]: {{ graph_series | relative_url }}
+{% endcomment %}
