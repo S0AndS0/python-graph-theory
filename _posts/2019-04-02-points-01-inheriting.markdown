@@ -52,7 +52,7 @@ ___
 ## Customizing `Point`s
 
 
->> If the cost of each edge depends on the number of agents using it, what `X` and `O` should I pass it to the 'neighbors' dictionary?
+>> ### If the cost of each edge depends on the number of agents using it, what `X` and `O` should I pass it to the 'neighbors' dictionary?
 
 
 I believe that the total cost is a result of a function that takes `points['w']['population']`s travel plans for instance (a property that'll be updated iteratively) and `cost` (`X`, or `Y` depending upon `Point`). And not to get too lost in the details but both `X` and `O` could be functions.
@@ -100,7 +100,7 @@ for key, customer in customers.items():
 ```
 
 
-These states a `Point` for the most part _totally doesn't care about_ from it's frame of reference as a destination that agents leave. At most in the second of the last to examples it would only _care_ about getting it's output by feeding a `first class function` call. One way to look at is maybe a `Point` could be like a dispatcher (a stationary agent) who keeps a roaster of other agents in town and maybe picks up calls (_if they _must_, and it's not a Monday_), from agents about recent traveling conditions after arriving at a neighbor. Defined this way a `Point` could intentionally give bad information to another agent.
+These states a `Point` for the most part _totally doesn't care about_ from it's frame of reference as a destination that agents leave. At most in the second of the last two examples it would only _care_ about getting it's output by feeding a `first class function` call. One way to look at is maybe a `Point` could be like a dispatcher (a stationary agent) who keeps a roaster of other agents in town and maybe picks up calls (_if they _must_, and it's not a Monday_), from agents about recent traveling conditions after arriving at a neighbor. Defined this way a `Point` could intentionally give bad information to another agent.
 
 
 > Maybe $v$ has never gotten along with $ S_{1} $ and will happily _low-ball_ any travel cost estimates given to that agent, maybe $ S_{1} $ doesn't figure this out till the end `n` of a _pay periods_ when their _gas_ cost vs. compensation are not as they expected. How $v$'s' and $ S_{1} $'s _personalities_ cause them to _mess_ with one another I think are within the _scope_ of a `Point`.
@@ -109,7 +109,7 @@ These states a `Point` for the most part _totally doesn't care about_ from it's 
 If you wish to question an edge I think it maybe helpful to re-frame an edge (define a `class`) as the points that are populated on an edge, so that things can be asked about those on an edge. This isn't to say that an edge must contain every point between, computers and $ \infty $ usually don't mix, but instead an edge could have a way of calculating things like distances between agents or their destination.
 
 
->> But it seems to me that the point class can only model edges with a constant cost?
+>> ### But it seems to me that the point class can only model edges with a constant cost?
 
 
 Sorta; it depends upon how you use those values or choose to update them. I took some care trying to model only part of the problem because covering everything in one post can cause readers to feel a bit like [Joel Miller](https://www.youtube.com/watch?v=IueMdK9I4Qg); which is __not__ my intent, I'd rather hope code be seen as another way to break a problem down to the _atomic_ level if need be.
@@ -314,12 +314,3 @@ Okay I think it's time for another pause for digestion, hopefully these pointers
 
 {% capture previous_post %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
 [previous-post]: {{ previous_post | relative_url }}
-
-{% comment %}
-> After writing your own custom `Point` class that solves a small problem (tip; keeping things modular allows you to _steal_ code from your past self), consider checking the [next post][next-post], where I _zoom out_ to the _three thousand forty eight meter view_ of what a project like the could look like, and a little more Q&A for good measure.
-
-> ... capture intentionally broken to nonexistent path to _future_; causality being what it may...
-
-{% capture next_post %}{ post_url 2019-04-02-points-02-futures }{% endcapture %}
-[next-post]: {{ next_post | relative_url }}
-{% endcomment %}
