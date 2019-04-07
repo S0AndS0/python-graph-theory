@@ -28,7 +28,7 @@ agents = {
 }
 
 
-for key, agent in agents.items():
+for agent in agents.values():
     agent['point']['population'].append(agent['name'])
 
 
