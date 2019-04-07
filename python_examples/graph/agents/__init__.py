@@ -40,29 +40,38 @@ class Agent(Hybrid_Iterator):
             visited = [],
             heading = {})
 
-    def next(self):
+    @property
+    def set_heading(self):
         """
         Sets `self['heading']` from unvisited `self['point'].cheapest()`
 
-        If multiple choices are available a randome one is picked.
-
-        `raises` an Exception if no where left to go.
+        If multiple choices are available a random one is picked.
         """
         self['heading'] = {}
         courses = {}
-        cheapest_routes = self['point'].cheapest()
+        routes = self['point'].cheapest()
         visited_addresses = [x.keys()[0] for x in self['visited']]
-        for address, cost in cheapest_routes.items():
+        for address, cost in routes.items():
             if address not in visited_addresses:
-                courses.update({address: cheapest_routes.pop(address)})
+                # ... Pop `{addr: cost}` pares into
+                #     `courses` only from unvisited
+                courses.update({address: routes.pop(address)})
 
         target_key = 0
         if len(courses.keys()) > 1:
+            # ... choose a random heading if
+            #     multiple courses are available
             target_key = randint(0, int(len(courses.keys()) - 1))
 
         if courses:
             address = courses.keys()[target_key]
             self['heading'] = {address: courses.pop(address)}
+
+    def next(self):
+        """
+        Calls `self.set_heading`, `raises` an Exception if no where left to go.
+        """
+        self.set_heading
 
         if not self['heading']:
             self.throw(GeneratorExit)
