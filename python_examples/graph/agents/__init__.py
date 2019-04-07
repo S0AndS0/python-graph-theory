@@ -40,16 +40,17 @@ class Agent(Hybrid_Iterator):
             visited = [],
             heading = {})
 
-    @property
-    def set_heading(self):
+    def set_heading(self, routes = None):
         """
-        Sets `self['heading']` from unvisited `self['point'].cheapest()`
+        Sets `self['heading']` from unvisited `routes`
 
         If multiple choices are available a random one is picked.
         """
+        if not routes:
+            routes = self['point'].cheapest()
+
         self['heading'] = {}
         courses = {}
-        routes = self['point'].cheapest()
         visited_addresses = [x.keys()[0] for x in self['visited']]
         for address, cost in routes.items():
             if address not in visited_addresses:
