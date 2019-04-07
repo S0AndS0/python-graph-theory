@@ -1,14 +1,9 @@
 #!/usr/bin/env python
-from __future__ import absolute_import, division, print_function
-# ... Above _unlocks_ some compatibility _magics_
-#     for running within Python 2 or 3
+from __future__ import absolute_import
 
 import sys
 sys.dont_write_bytecode = True
-# ... When in production remove or comment above
-#     two lines to gain `pyc` _speed boost_. They're
-#     there to mitigate thrashing SSD and similar
-#     storage media during the development process.
+
 
 license = """
 Python class for modeling Points of simple graphs.
@@ -35,9 +30,9 @@ class Point(dict):
 
     ## Arguments
 
-    - `address` should be a unique identifier that can be used as a `key`
-    - `neighbors` should be a `dict` with `{address: cost}` key value pares
-      - `cost` should be a `float` or `int`
+    - `address`; unique identifier that can be used as a `key`
+    - `neighbors`; `dict` with `{address: cost}` key value pares
+      - `cost`; `float` or `int`
 
     > `address`es are the same regardless of scope
     """
@@ -77,22 +72,20 @@ class Point(dict):
 
 if __name__ == '__main__':
     """
-    Following block of code is only execute if run as a script.
-    - or in other-words importing ignores bellow
-    - or in other-other-words a good place to put quick unit tests
+    Quick unit tests for when this file is run as a script
     """
-    print("Initalizing unit test.\n{0}".format("".join(['_' for x in range(9)])))
-    X = 0.2
-    O = 0.7
+    f_line = "".join(['_' for x in range(9)])
 
+    print("Initalizing unit test.\n{0}".format(f_line))
+    X, Y = (0.2, 0.7)
     points = {
         'u': Point(address = 'u', neighbors = {'v': X, 'w': X}),
-        'v': Point(address = 'v', neighbors = {'u': O, 'w': X}),
-        'w': Point(address = 'w', neighbors = {'u': O, 'v': X}),
+        'v': Point(address = 'v', neighbors = {'u': Y, 'w': X}),
+        'w': Point(address = 'w', neighbors = {'u': Y, 'v': X}),
     }
 
-    print("Dumping named points.\n{0}".format("".join(['_' for x in range(9)])))
+    print("Dumping named points.\n{0}".format(f_line))
     for name, point in points.items():
         print("{name} -> {point}".format(name = name, point = point))
 
-    print("Finished unit tests.\n{0}".format("".join(['_' for x in range(9)])))
+    print("Finished unit tests.\n{0}".format(f_line))
