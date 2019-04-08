@@ -46,10 +46,8 @@ $$
 \color{#00A}{\fbox{ Point }}
 $$
 
+
 ___
-
-
-## Customizing `Point`s
 
 
 >> ### If the cost of each edge depends on the number of agents using it, what `X` and `O` should I pass it to the 'neighbors' dictionary?
@@ -74,7 +72,7 @@ edge_cost(base_cost = travel_estimate, drivers = 2)
 ```
 
 
-> What I'm asking of `edge_cost` might also be able to be expressed as $ e{\left( c, d \right)} = d \times c $, though one _gotcha_ (if I remember correctly), is that $ \text{`pythonLambda`} {\ne} {lambda} $, because a Python `lambda` can be asked to do things that don't quite translate cleanly the other-way-round.
+> What I'm asking of `edge_cost` might also be able to be expressed as $ e{\left( c, d \right)} = d \times c $, though one _gotcha_ (if I remember correctly), is that $ {pythonLambda} {\ne} {lambda} $, because a Python `lambda` can be asked to do things that don't quite translate cleanly the other-way-round.
 
 
 - _Differing_ execution/calculations of `X` and `O`, or in this case `first` and `business` _class tickets_.
@@ -86,8 +84,8 @@ business = lambda base_cost: base_cost + 0.2
 
 
 customers = {
-    'bob': {'name': 'Bill', 'ticket': business},
-    'alice': {'name': 'Alice', 'ticket': first}}
+    'Bill': {'name': 'Bill', 'ticket': business},
+    'Alice': {'name': 'Alice', 'ticket': first}}
 
 
 for key, customer in customers.items():
@@ -100,7 +98,9 @@ for key, customer in customers.items():
 ```
 
 
-These states a `Point` for the most part _totally doesn't care about_ from it's frame of reference as a destination that agents leave. At most in the second of the last two examples it would only _care_ about getting it's output by feeding a `first class function` call. One way to look at is maybe a `Point` could be like a dispatcher (a stationary agent) who keeps a roaster of other agents in town and maybe picks up calls (_if they _must_, and it's not a Monday_), from agents about recent traveling conditions after arriving at a neighbor. Defined this way a `Point` could intentionally give bad information to another agent.
+These states a `Point` for the most part _totally doesn't care about_ from it's frame of reference as a destination that agents leave. At most in the second of the last two examples it would only _care_ about getting it's output by feeding a `first class function` call.
+
+One way to look at is maybe a `Point` could be like a dispatcher (a stationary agent) who keeps a roaster of other agents in town and maybe picks up calls (_if they _must_, and it's not a Monday_), from agents about recent traveling conditions after arriving at a neighbor. Defined this way a `Point` could intentionally give bad information to another agent.
 
 
 > Maybe $v$ has never gotten along with $ S_{1} $ and will happily _low-ball_ any travel cost estimates given to that agent, maybe $ S_{1} $ doesn't figure this out till the end `n` of a _pay periods_ when their _gas_ cost vs. compensation are not as they expected. How $v$'s' and $ S_{1} $'s _personalities_ cause them to _mess_ with one another I think are within the _scope_ of a `Point`.
@@ -289,7 +289,9 @@ for i in range(hours_start, (hours_end * days) + 1, hours_step):
 ```
 
 
-Indeed I've just nested even more loops, I'll address one way of mitigating this overall problem in the future if asked; hint `Iterator`s are really swell. Right now what is important to grasp from the adjusted model is that we now have a way to consistently _mask_ the initialized `cost` values within a point based off some other state that is updated. And that regardless of if a `Point` is a normal point or special point like `Construction`, the `cheapest` of `routs` methods are what is called by what ever process asking the questions of `points`.
+Indeed I've just nested even more loops, I've address one way of mitigating this overall problem in with a [`Hybrid_Iterator`][hybrid-iterator-post] `class` that calculates new states whenever a process calls `next()`, something that is called implicitly by `for` loops.
+
+Right now what is important to grasp from the adjusted model is that we now have a way to consistently _mask_ the initialized `cost` values within a point based off some other state that is updated. And that regardless of if a `Point` is a normal point or special point like `Construction`, the `cheapest` of `routs` methods are what is called by what ever process asking the questions of `points`.
 
 
 ```
@@ -309,8 +311,17 @@ Indeed I've just nested even more loops, I'll address one way of mitigating this
 ```
 
 
-Okay I think it's time for another pause for digestion, hopefully these pointers have helped ya plan out a course.
+I think this is a good time for another pause for digestion, hopefully these pointers have helped ya plan out a course.
+
+
+If you run into _writter's block_ for [`Agent`s][agents-post] I've started writing a structure for what I'm looking to model, perhaps it'll inspire you to write something better for your own projects.
 
 
 {% capture previous_post %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
 [previous-post]: {{ previous_post | relative_url }}
+
+{% capture agents_post %}{%- post_url 2019-04-07-agents-00 -%}{% endcapture %}
+[agents-post]: {{ agents_post | relative_url }}
+
+{% capture hybrid_iterator_post %}{%- post_url 2019-04-07-agents-00 -%}{% endcapture %}
+[hybrid-iterator-post]: {{ hybrid_iterator_post | relative_url }}
