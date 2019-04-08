@@ -16,7 +16,7 @@ ___
 I'll attempt to assist with the following bits...
 
 
->> One idea I could think was that we define biases based on user/operator input. Thus some graphs are more relevant/important than others. Using this as a guiding heuristic we can do some kind of pruning to avoid enumerating all possible graphs.
+>> ### ..."One idea I could think was that we define biases based on user/operator input. Thus some graphs are more relevant/important than others. Using this as a guiding heuristic we can do some kind of pruning to avoid enumerating all possible graphs."...
 
 
 ... but first it's probably a good idea to get comfortable (snack and/or drink in other-words), it's going to be one of those posts ;-D
@@ -378,7 +378,7 @@ for chunk in buffer:
 ```
 
 
-> That business above with `counter` and `c_max` is to ensure an initialized `Priority_Buffer` with inputs that result in contemplating $\infty$ the wrong way are not disastrous.
+> That business above with `counter` and `c_max` is to ensure an initialized `Priority_Buffer` with inputs that result in contemplating $\infty$ the wrong way are not disastrous. Let the option's prefix guide your usage, eg. `GE_` and `GE_` options are to be used together.
 
 
 ... which should output something that looks like...
@@ -403,7 +403,7 @@ Chunk 4 of ~ 4
 ```
 
 
-The original `graph` dictionary should now be _empty_, destructive reads with `pop()` are a memory vs computation optimization _feature_ as well as an attempt to mitigate _looking over_ the same priorities ranges' worth of data too redundantly before expanding the _search space_.
+The original `graph` dictionary should now be _empty_, destructive reads with `pop()` are a memory vs computation optimization _feature_ as well as an attempt to mitigate _looking over_ the same priorities ranges' worth of data, too redundantly before expanding the _search space_.
 
 
 If _consuming_ the `graph` is not a desired behavior I believe `Priority_Buffer(graph = dict(graph),...)` _copies_ the source data during initialization, this means you'd have two copies of the same data, however, `Priority_Buffer`'s will on average always be decreasing... well that is unless you _refill_ `buffer['graph']` with an `update({'sub_graph_<n>': ...})` before the main loop exits, which hint hint, allowing for such _shenanigans_ on a loop is kinda why it's written the way it is ;-) though you'll want to _refresh_ the `buffer['GE_bound']` (or `LE_bound`) to ensure things are bubbling up again like they should.
@@ -412,7 +412,10 @@ If _consuming_ the `graph` is not a desired behavior I believe `Priority_Buffer(
 Using the currently scripted methods you'll always get `chunk`s size of `buffer['buffer_size']` or less. The first found that are greater or equal to `buffer['priority']['GE_bound']` (inverse for `LE_bound`) are returned as a `chunk`. If for example it didn't have enough on a given call of `buffer.next()` (implicitly called by loops), the _search space_ would expand by `buffer['step']['amount']` till either it reaches (or crosses) `buffer['step']['GE_min']` or the buffer size is satisfied. There's a few other _bits-n-bobs_ for exiting when `graph` is empty but that's the _gist_ of it.
 
 
-While it'll happily make mistakes on your behalf at the speed of _ohh sh_... I think it's a __fair start__ (in that those within a range are prioritized, _first-found $=$ first-`pop`ed_), and close enough to what you're asking for that it _hacking_ into something better is totally likely. This is probably a good point to pause and allow things to _steep_. When you're ready, the following are a few extra tips;
+While it'll happily make mistakes on your behalf at the speed of _ohh sh_... I think it's a __fair start__ (in that those within a range are prioritized, _first-found $=$ first-`pop`ed_), and close enough to what you're asking for that it _hacking_ into something better is totally likely. For example, say ya wanted to implement a _YOLO_ (_"You Only Look Once"_) algorithm where things are sorted into _buckets_ of ranges, there'd be more code and more `buffers`
+
+
+This is probably a good point to pause and allow things to _steep_. When you're ready, the following are a few extra tips;
 
 
 - be __careful__ with `step['amount']`'s _direction_; decrement (use negative numbers) when using `GE_` related configurations, and increment when using `LE_`,
