@@ -20,6 +20,9 @@ At it's core this site's documentation is built in large part thanks to the [Jek
 ## ... contributers
 
 
+> The following entities deserve some thanks for posing questions that encouraged sharing notes and tips related to Python.
+
+
 - [Raven Cheuk](https://math.stackexchange.com/users/647646/raven-cheuk) who asked a [question](https://math.stackexchange.com/questions/3130866/modelling-congestion-games-in-python-without-tons-of-for-loop) only to find so many more ways to _interrogate_ a problem for [answers][points-posts].
 
 - [user-1-1-1](https://math.stackexchange.com/users/184201/user-1-1-1) who asked a [question](https://math.stackexchange.com/questions/2389734/smart-enumeration-of-a-subset-of-graphs-obtained-from-a-parent-graph) and got a [priority buffer][priority-buffer] proof-of-code [answer][priority-buffer-answer].
