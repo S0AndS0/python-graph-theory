@@ -302,5 +302,5 @@ Some might wonder then why I'd even assign references of `point`s within an `Age
 {% capture priority_buffer_series %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
 [priority-buffer]: {{ priority_buffer_series | relative_url }}
 
-{% capture graph_series %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
+{% capture graph_series %}{%- post_url 2019-04-07-graph-00 -%}{% endcapture %}
 [graphs]: {{ graph_series | relative_url }}
