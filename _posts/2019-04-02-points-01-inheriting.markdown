@@ -86,7 +86,7 @@ business = lambda base_cost: base_cost + 0.2
 
 
 customers = {
-    'bob': {'name': 'Bob', 'ticket': business},
+    'bob': {'name': 'Bill', 'ticket': business},
     'alice': {'name': 'Alice', 'ticket': first}}
 
 
@@ -95,7 +95,7 @@ for key, customer in customers.items():
         'name': customer['name'],
         'cost': customer['ticket'](base_cost = 0.4)
     }))
-# -> Bob ticket cost -> 0.6
+# -> Bill ticket cost -> 0.6
 # -> Alice ticket cost -> 0.9
 ```
 
