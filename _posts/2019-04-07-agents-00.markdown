@@ -7,7 +7,7 @@ categories: graph
 {%- include mathjax.html -%}
 
 
-> If this is your first time here it might be a good idea to start at the [`Points`][points] series, and it also might be helpful to review the how the [`Hybrid_Iterator`][priority-buffer] `class` was used within the priority buffer series, because the `Agent` `class` will be inheriting from `Hybrid_Iterator`
+> If this is your first time here it might be a good idea to start at the [`Points`][points] series, and it also might be helpful (though not required) to review the how the [`Hybrid_Iterator`][priority-buffer] `class` was used within the priority buffer series, because the following `Agent` `class` will be inheriting from `Hybrid_Iterator`
 
 ___
 
@@ -146,11 +146,8 @@ from graph.points import Point
 from graph.agents import Agent
 
 
-f_line = "".join(['_' for x in range(9)])
-
-
-print("{0}\nInitializing points of graph".format(f_line))
-X, O = (0.2, 0.7)
+X = 0.2
+O = 0.7
 points = {
     'u': Point(address = 'u', neighbors = {'v': X, 'w': X}),
     'v': Point(address = 'v', neighbors = {'u': O, 'w': X}),
@@ -172,12 +169,16 @@ agents = {
 ```
 
 
-> Note, if ya wanted to update the `points` `population` with `name`s of `Agent`s that could look like.
+> Note, if ya wanted to update the `points` `population` with `name`s of `Agent`s that could look like...
+
 
 ```python
 for agent in agents.values():
     agent['point']['population'].append(agent['name'])
 ```
+
+
+> ... though that does then require updating a `Point`'s population every-time an `Agent` wants to move, that would be ontop of updating an `Agent`'s reference to a `Point` too.
 
 
 ... and letting `Bill` _wander about_, safely, could look like...
@@ -230,15 +231,14 @@ Places that Bill has been -> [{'v': 0.2}, {'w': 0.2}]
 ```
 
 
+Next up is addressing how to move more than one agent at a time, when you're ready feel free to start in on the [graph series][graph].
+
+
 {% capture points_series %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
 [points]: {{ points_series | relative_url }}
 
 {% capture priority_buffer_series %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
 [priority-buffer]: {{ priority_buffer_series | relative_url }}
 
-{% comment %}
-I'll be addressing how to move more than one `Agent` at a time within the [`Graphs`][graphs] post series.
-
-{% capture graph_series %}{ post_url "" }{% endcapture %}
+{% capture graph_series %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
 [graphs]: {{ graph_series | relative_url }}
-{% endcomment %}
