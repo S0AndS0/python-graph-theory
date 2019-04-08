@@ -225,7 +225,7 @@ if __name__ == '__main__':
 
     buffer['modifier'] = populate
     buffer['priority']['GE_bound'] = 7
-    print("Re-polulating `buffer['graph']`.\n{0}".format("".join(['_' for x in range(9)])))
+    print("Re-populating `buffer['graph']`.\n{0}".format("".join(['_' for x in range(9)])))
     for i in range(0, 21, 1):
         buffer['graph'].update({
             "sub_graph_{0}".format(i): {

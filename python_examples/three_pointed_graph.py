@@ -33,19 +33,9 @@ Convenience functions
 """
 
 
-def dump_points(graph):
-    for addr, point in graph['points'].items():
-        print("{0} -> {1}".format(addr, point))
-
-
-def dump_agents(graph):
-    for name, agent in graph['agents'].items():
-        print("{0} -> {1}".format(name, agent))
-
-
-def dump_off_duty(graph):
-    for name, agent in graph['off_duty'].items():
-        print("{0} -> {1}".format(name, agent))
+def key_dump(dictionary, key):
+    for k, v in dictionary[key].items():
+        print("{0} -> {1}".format(k, v))
 
 
 """
@@ -68,8 +58,8 @@ graph = Graph(
     })
 
 
-dump_points(graph)
-dump_agents(graph)
+key_dump(graph, 'points')
+key_dump(graph, 'agents')
 
 
 """
@@ -77,17 +67,15 @@ Observe the _little computer people_ move about the `graph`
 """
 
 
-count = 0
-print("## {0} {1}".format(count, f_line))
-dump_points(graph)
-for travel_plans in graph:
-    count += 1
-    if count > 5:
+print("## 0 {0}".format(f_line))
+key_dump(graph, 'points')
+for i, _ in enumerate(graph):
+    if i > 5:
         raise Exception("Hunt for bugs!")
 
-    print("## {0} {1}".format(count, f_line))
-    dump_points(travel_plans)
+    print("## {0} {1}".format(i, f_line))
+    key_dump(graph, 'points')
 
-print("## {0} {1}".format(count, f_line))
-dump_off_duty(graph)
-dump_points(graph)
+print("## {0} {1}".format(i, f_line))
+key_dump(graph, 'off_duty')
+key_dump(graph, 'points')

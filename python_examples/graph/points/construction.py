@@ -71,9 +71,8 @@ class Construction(Point):
 
 
 if __name__ == '__main__':
-    """
-    """
-    print("Initalizing unit test.\n{0}".format("".join(['_' for x in range(9)])))
+    f_line = "".join(['_' for x in range(9)])
+    print("Initializing unit test.\n{0}".format(f_line))
     X = 0.2
     O = 0.7
 
@@ -83,7 +82,7 @@ if __name__ == '__main__':
         'w': Point(address = 'w', neighbors = {'u': O, 'v': X}),
     }
 
-    print("Adding exra {0} named points.\n{1}".format('c', "".join(['_' for x in range(9)])))
+    print("Adding exra {0} named points.\n{1}".format('c', f_line))
     points.update({
         'c': Construction(
             address = 'w',
@@ -95,12 +94,12 @@ if __name__ == '__main__':
                      16: 0.3, 17: 0.2}
             )})
 
-    print("Updating neighbors of {0}.\n{1}".format('c', "".join(['_' for x in range(9)])))
+    print("Updating neighbors of {0}.\n{1}".format('c', f_line))
     Z = 0.1
     for address in points['c']['neighbors'].keys():
         points[address]['neighbors'].update({'c': Z})
 
-    print("Dumping named points.\n{0}".format("".join(['_' for x in range(9)])))
+    print("Dumping named points.\n{0}".format(f_line))
     hours_start = 1
     hours_end = 24
     hours_step = 1
@@ -129,4 +128,4 @@ if __name__ == '__main__':
                     d = day_count, h = current_hour,
                     p = address, r = cheapest_routs))
 
-    print("Finished unit tests.\n{0}".format("".join(['_' for x in range(9)])))
+    print("Finished unit tests.\n{0}".format(f_line))

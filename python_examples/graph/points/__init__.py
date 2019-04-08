@@ -76,7 +76,7 @@ if __name__ == '__main__':
     """
     f_line = "".join(['_' for x in range(9)])
 
-    print("Initalizing unit test.\n{0}".format(f_line))
+    print("Initializing unit test.\n{0}".format(f_line))
     X, Y = (0.2, 0.7)
     points = {
         'u': Point(address = 'u', neighbors = {'v': X, 'w': X}),
