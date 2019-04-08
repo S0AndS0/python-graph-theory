@@ -56,7 +56,7 @@ Initializing `graph` and state inspection
 X, O = (0.2, 0.7)
 graph = Graph(
     agents = {
-        'Bob': 'u',
+        'Bill': 'u',
         'Alice': 'u',
         'Ted': 'v',
         'Jain': 'w'

@@ -53,9 +53,9 @@ class Graph(Hybrid_Iterator):
         - `address` maybe a `str`ing or instance of `Point`
         - `name` should be a `str`ing
 
-        ## Assignes
+        ## Assigns
         - instance of `Agent` under `self['agents'][name]`
-        - refferace to `self['points'][address]` under `self['agents'][name]['points']`
+        - reference to `self['points'][address]` under `self['agents'][name]['points']`
 
         ## Appends `name` to
         - `self['points'][address]['population']`
@@ -71,12 +71,22 @@ class Graph(Hybrid_Iterator):
         Adds instance of `Point` under `self['points'][name]`
 
         ## Arguments
-        - `address` shouold be a `str`ing
+        - `address` should be a `str`ing
         - `neighbors` should be a `{addr: cost}` `dict`ionary
         """
         self['points'].update({address: Point(address, neighbors)})
 
     def set_travel_plans(self, agents = None):
+        """
+        Assigns `self['travel_plans']` by calling `next()` on each of `agents`
+
+        Example: `{'Bill': Agent(name='Bill', ...), ...}`, __or__ `{}`
+
+        ## Arguments
+        - `agents`; should be a `{key: Agent()}` `dict`ionary
+
+        > `agents` defaults to `self['agents']` if `None` where passed
+        """
         self['travel_plans'] = {}
         if not agents:
             agents = self['agents']
