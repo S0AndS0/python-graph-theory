@@ -14,7 +14,7 @@ ___
 
 It is now time to try and _stitch_ everything together! Not quite the _finish line_ but it should be _in sight_.
 
-In this post I'll be adding `graphs/__init__.py` which'll contain the `Graph` base `class`.
+In this post I'll be adding `graph/__init__.py` which'll contain the `Graph` base `class`.
 
 > As a refresher here's a _sketch_ of `Hybrid_Iterator`'s `super` relationships with `dict` and `Iterator` `class`es
 
@@ -39,12 +39,12 @@ $$
 \color{#00A}{\fbox{ Iterator }}
 $$
 
-> The project's file path _structure_ may look something like...
+> By now the project's file path _structure_ may look something like...
 
 ```
-graphs/points/__init__.py
-graphs/points/construction.py
-graphs/agents/__init__.py
+graph/agents/__init__.py
+graph/points/__init__.py
+graph/points/construction.py
 ```
 
 > Here's a _sketch_ of what the following code hopes to build
@@ -65,7 +65,7 @@ $$
 > Don't get too caught-up with that bit going on with `__init__` and the `add_agent`, and `add_point` methods, get to the example usage and it should become much clearer; really the _star_ of this _show_ is the `set_travel_plans` method ;-)
 
 
-### `graphs/__init__.py`
+### `graph/__init__.py`
 
 
 ```python
@@ -103,9 +103,9 @@ class Graph(Hybrid_Iterator):
         - `address` maybe a `str`ing or instance of `Point`
         - `name` should be a `str`ing
 
-        ## Assignes
+        ## Assigns
         - instance of `Agent` under `self['agents'][name]`
-        - refferace to `self['points'][address]` under `self['agents'][name]['points']`
+        - reference to `self['points'][address]` under `self['agents'][name]['points']`
 
         ## Appends `name` to
         - `self['points'][address]['population']`
@@ -121,7 +121,7 @@ class Graph(Hybrid_Iterator):
         Adds instance of `Point` under `self['points'][name]`
 
         ## Arguments
-        - `address` shouold be a `str`ing
+        - `address` should be a `str`ing
         - `neighbors` should be a `{addr: cost}` `dict`ionary
         """
         self['points'].update({address: Point(address, neighbors)})
@@ -187,11 +187,11 @@ if __name__ == '__main__':
 ```
 
 
-Provided that the above was saved somewhere like `graphs/__init__.py` it could be imported via...
+Provided that the above was saved somewhere like `graph/__init__.py` it could be imported via...
 
 
 ```python
-from graphs import Graph
+from graph import Graph
 ```
 
 
@@ -222,9 +222,8 @@ And now time to use it with a _safety_ loop....
 
 ```python
 count = 0
-for _ in graph:
-    count += 1
-    if count > 5:
+for i, _ in enumerate(graph):
+    if i > 5:
         raise Exception("Hunt for bugs!")
 
     print("## {0} {1}".format(count, f_line))
@@ -256,6 +255,11 @@ Moved Ted to off_duty
 
 **_Excellent_** it didn't hit the `Hunt for bugs` `Exception` and successfully moved the `Agent`s about! While not quite fully _fleshed out_, with a bit of _lurching_ it's getting closer to something that will model graph related problems in an organized fashion.
 
+
+Hopefully, in regards to having the tools and know-how to break a problem down, you're now seeing the _finish line_ fast approaching. If not open an [`Issue`][got-issues] detailing what steps you've already tried, maybe someone'll be kind in their reply.
+
+
+[got-issues]: https://github.com/S0AndS0/python-graph-theory/issues/
 
 {% capture root_post %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
 [root-post]: {{ root_post | relative_url }}
