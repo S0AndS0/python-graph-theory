@@ -54,9 +54,7 @@ class Agent(Hybrid_Iterator):
         visited_addresses = [x.keys()[0] for x in self['visited']]
         for address, cost in routes.items():
             if address not in visited_addresses:
-                # ... Pop `{addr: cost}` pares into
-                #     `courses` only from unvisited
-                courses.update({address: routes.pop(address)})
+                courses.update({address: cost})
 
         target_key = 0
         if len(courses.keys()) > 1:
@@ -70,9 +68,10 @@ class Agent(Hybrid_Iterator):
 
     def next(self):
         """
-        Calls `self.set_heading`, `raises` an Exception if no where left to go.
+        Calls `self.set_heading()`, `raises` `GeneratorExit`
+        if no where left to go.
         """
-        self.set_heading
+        self.set_heading(routes = self['point']['neighbors'])
 
         if not self['heading']:
             self.throw(GeneratorExit)

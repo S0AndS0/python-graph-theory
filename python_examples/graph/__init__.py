@@ -35,15 +35,31 @@ class Graph(Hybrid_Iterator):
 
     def __init__(self, agents, points, **kwargs):
         super(Graph, self).__init__(**kwargs)
-        self.update(agents = {}, points = {}, off_duty = {})
+        self.update(
+            agents = {},
+            points = {},
+            off_duty = {},
+            travel_plans = {})
+
         for point, neighbors in points.items():
             self.add_point(point, neighbors)
-            # print(self)
 
         for name, address in agents.items():
             self.add_agent(name, address)
 
     def add_agent(self, name, address):
+        """
+        ## Arguments
+        - `address` maybe a `str`ing or instance of `Point`
+        - `name` should be a `str`ing
+
+        ## Assignes
+        - instance of `Agent` under `self['agents'][name]`
+        - refferace to `self['points'][address]` under `self['agents'][name]['points']`
+
+        ## Appends `name` to
+        - `self['points'][address]['population']`
+        """
         if isinstance(address, str):
             address = self['points'][address]
 
@@ -51,44 +67,57 @@ class Graph(Hybrid_Iterator):
         address['population'].append(name)
 
     def add_point(self, address, neighbors):
+        """
+        Adds instance of `Point` under `self['points'][name]`
+
+        ## Arguments
+        - `address` shouold be a `str`ing
+        - `neighbors` should be a `{addr: cost}` `dict`ionary
+        """
         self['points'].update({address: Point(address, neighbors)})
+
+    def set_travel_plans(self, agents = None):
+        self['travel_plans'] = {}
+        if not agents:
+            agents = self['agents']
+
+        for key, agent in agents.items():
+            try:
+                self['travel_plans'].update({key: agent.next()})
+            except (StopIteration, GeneratorExit):
+                # Pop agents that will not move anymore
+                print("Moved {name} to off_duty".format(name = agent['name']))
+                self['off_duty'].update({key: agents.pop(key)})
+                if self['travel_plans'].get(key):
+                    self['travel_plans'].pop(key)
+
+        return self['travel_plans']
 
     def next(self):
         """
-        This is what is called by `for` loops implicitly but maybe called explicitly
+        Calls `self.set_travel_plans`, `raise`s `GeneratorExit`
+        if out of `agents` or `travel_plans`, otherwise this
+        method will _simulate_ moving agents around the graph
         """
-        # if self.is_finished is True:
-        #     self.throw(GeneratorExit)
-
-        ## ... Get travel plans from agents
-        travel_plans = {}
-        for name, agent in self['agents'].items():
-            try:
-                travel_plans.update({name: agent.next()})
-            except (StopIteration, GeneratorExit):
-                # Pop agents that will not move anymore
-                print("Moved {name} to off_duty".format(name = name))
-                self['off_duty'].update({name: self['agents'].pop(name)})
-            else:
-                # Let them pass by updating their location
-                here = agent['point']['address']
-                heading = agent['heading']
-                there = heading.keys()[0]
-
-                print("{name} traveling from {here} to {there} paying {cost}".format(
-                    name = name,
-                    here = here,
-                    there = there,
-                    cost = heading[there]))
-
-                agent['point']['population'].remove(name)
-                agent['visited'].append(heading)
-
-                agent['point'] = self['points'][there]
-                agent['point']['population'].append(name)
-
-        if not self['agents']:
+        self.set_travel_plans(agents = self['agents'])
+        if not self['agents'] or not self['travel_plans']:
             self.throw(GeneratorExit)
+
+        for key, agent in self['travel_plans'].items():
+            here = agent['point']['address']
+            heading = agent['heading']
+            there = heading.keys()[0]
+            # ... `heading` ~ `{addr: cost}`
+
+            print("{name} traveling from {here} to {there} paying {cost}".format(
+                name = agent['name'], here = here,
+                there = there, cost = heading[there]))
+
+            agent['point']['population'].remove(agent['name'])
+            agent['visited'].append(heading)
+
+            agent['point'] = self['points'][there]
+            agent['point']['population'].append(agent['name'])
 
         return self
 
