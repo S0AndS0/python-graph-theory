@@ -7,18 +7,15 @@ categories: graph
 {%- include mathjax.html -%}
 
 
-> If this is your first time here it might be a good idea to start at the [`Points`][points] series, and it also might be helpful (though not required) to review the how the [`Hybrid_Iterator`][priority-buffer] `class` was used within the priority buffer series, because the following `Agent` `class` will be inheriting from `Hybrid_Iterator`
+> If this is your first time here it might be a good idea to start at the [`Points`][points] series, and it also might be helpful (though not required) to review the how the [`Hybrid_Iterator`][priority-buffer] `class` was used within the priority buffer series, because the following `Agent` `class` will also be inheriting from `Hybrid_Iterator`
 
 ___
-
-
-## `Agent`s
 
 
 What I'll be asking of an `Agent` any time `next()` or `__next__()` is called, is to look at it's current `Point`'s `neighbors`, consider those that the `Agent` has not visited and set the one of those to `self['heading']`, then return it`self` for further consideration. When the `Agent` no longer has anywhere left to travel (without backtracking), they'll throw/`raise` the specified error object to signal to the calling process that the they're finished.
 
 
-> As a refresher here's a _sketch_ of `Hybrid_Iterator`'s `super` relationships with `dict` and `Iterator` `class`es
+> As a refresher here's a _sketch_ of `Hybrid_Iterator`'s `super` relationships with `dict` and `Iterator` `class`es, and a link to [`hybrid_iterator/__init__.py`](https://github.com/S0AndS0/python-graph-theory/blob/647903d1412df513f4f030b963e4b25d0ec3255e/python_examples/hybrid_iterator/__init__.py)
 
 
 $$
@@ -95,9 +92,7 @@ class Agent(Hybrid_Iterator):
         visited_addresses = [x.keys()[0] for x in self['visited']]
         for address, cost in routes.items():
             if address not in visited_addresses:
-                # ... Pop `{addr: cost}` pairs into
-                #     `courses` only from unvisited
-                courses.update({address: routes.pop(address)})
+                courses.update({address: cost})
 
         target_key = 0
         if len(courses.keys()) > 1:
@@ -129,10 +124,29 @@ if __name__ == '__main__':
 ```
 
 
-By separating out the behavior of an `Agent` from the `next` calls, sub-classing custom a new agent with a different `set_heading` method _should_ be relatively easy, and not require too much editing of code further up the stack.
+> By separating out the behavior of an `Agent` from the `next` calls, sub-classing custom a new agent with a different `set_heading` method _should_ be relatively easy, and not require too much editing of code further up the stack.
+>
+> Hint, by sub-classing and borrowing the `cheapest` of `routs` method from the `Point` class it's possible to make a _`Frugal_Agent`_, here's a really quick example of what that could look like...
 
 
-In order to test more easily this new `class` that makes use of `Hybrid_Iterator` from a parent directory, a temporary script file should be written under the _root_ directory for the Python project, eg. `python_examples/bills_adventure.py`. The beginning of this file could look like the following...
+```python
+from graph.agents import Agent
+
+
+class Frugal_Agent(Agent):
+    def next(self):
+        neighbors = self['point']['neighbors']
+        cheapest = self['point'].cheapest(neighbors)
+        self.set_heading(cheapest)
+
+        if not self['heading']:
+            self.throw(GeneratorExit)
+
+        return self
+```
+
+
+In order to test more easily this new `class` that makes use of `Hybrid_Iterator` from a parent directory, a temporary script file should be written under the _root_ directory for the Python project, eg. `python_examples/bills_adventure.py`. This test file could begin a bit like...
 
 
 ```python
@@ -153,7 +167,6 @@ points = {
     'v': Point(address = 'v', neighbors = {'u': O, 'w': X}),
     'w': Point(address = 'w', neighbors = {'u': O, 'v': X}),
 }
-print("{0}\n{1}".format(points, f_line))
 ```
 
 Initializing a set of four `Agents` could then look like...
@@ -178,7 +191,7 @@ for agent in agents.values():
 ```
 
 
-> ... though that does then require updating a `Point`'s population every-time an `Agent` wants to move, that would be ontop of updating an `Agent`'s reference to a `Point` too.
+> ... though that does then require updating a `Point`'s population every-time an `Agent` wants to move, that would be ontop of updating an `Agent`'s reference to a `Point` too. And definitely read the `Warning` latter on in this post about recursion limits.
 
 
 ... and letting `Bill` _wander about_, safely, could look like...
@@ -217,7 +230,9 @@ print("Places that {0} has been -> {1}\n\tcurrently at -> at {2}".format(
 ```
 
 
-> That _business_ with `count` is __important__ for testing, without it the `for` loop _could_ loop indefinitely from some bug within the loop's or `Agent`'s code.
+> This _safety_ looping with `count` is a good habit to get into when testing a `class`s' iterative behavior; without it one of the many `for` loops _could_ loop indefinitely from some bug or uncaught _edge case_.
+>
+> If/when that happens, a loop that never ends, try _mashing_ `Ctrl^c` for a bit, or searching for the Process ID so that it can be terminated with _`kill -9 <PID>`_.
 
 
 ... output may look something like...
