@@ -260,7 +260,7 @@ Places that Bill has visited -> [{'w': 0.2}, {'v': 0.2}, {'u': 0.7}]
 This is probably a good place to pause and experiment with the `class`es so far introduced. Perhaps consider making a slightly _absent minded_ agent, one that randomly _forgets_ where they've been but not the costs, eg. `agents['Ted']['visited']` $\implies$ `list({'somewhere': 1.8}, {'u': 0.2}, ...)`, and see what kinds of _excellent adventures_ your agents can have.
 
 
-When you're ready I've begun covering one way of constructing a [`Graph`][graph] class that enables moving more than one `Agent` at a time.
+When you're ready I've begun covering one way of constructing a [`Graph`][graphs] class that enables moving more than one `Agent` at a time.
 
 
 ## Warnings
