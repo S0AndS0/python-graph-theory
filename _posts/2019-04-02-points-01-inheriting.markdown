@@ -50,7 +50,7 @@ $$
 ___
 
 
->> ### If the cost of each edge depends on the number of agents using it, what `X` and `O` should I pass it to the 'neighbors' dictionary?
+>> ### "If the cost of each edge depends on the number of agents using it, what `X` and `O` should I pass it to the 'neighbors' dictionary?"
 
 
 I believe that the total cost is a result of a function that takes `points['w']['population']`s travel plans for instance (a property that'll be updated iteratively) and `cost` (`X`, or `Y` depending upon `Point`). And not to get too lost in the details but both `X` and `O` could be functions.
@@ -59,7 +59,7 @@ I believe that the total cost is a result of a function that takes `points['w'][
 Here's two quick examples of how that could look in Python using `lambda`s...
 
 
-- _Masking_ saved `cost` states
+- _Masking_ saved `cost` states.
 
 
 ```python
@@ -109,7 +109,7 @@ One way to look at is maybe a `Point` could be like a dispatcher (a stationary a
 If you wish to question an edge I think it maybe helpful to re-frame an edge (define a `class`) as the points that are populated on an edge, so that things can be asked about those on an edge. This isn't to say that an edge must contain every point between, computers and $ \infty $ usually don't mix, but instead an edge could have a way of calculating things like distances between agents or their destination.
 
 
->> ### But it seems to me that the point class can only model edges with a constant cost?
+>> ### "But it seems to me that the point class can only model edges with a constant cost?"
 
 
 Sorta; it depends upon how you use those values or choose to update them. I took some care trying to model only part of the problem because covering everything in one post can cause readers to feel a bit like [Joel Miller](https://www.youtube.com/watch?v=IueMdK9I4Qg); which is __not__ my intent, I'd rather hope code be seen as another way to break a problem down to the _atomic_ level if need be.
@@ -323,5 +323,5 @@ If you run into _writter's block_ for [`Agent`s][agents-post] I've started writi
 {% capture agents_post %}{%- post_url 2019-04-07-agents-00 -%}{% endcapture %}
 [agents-post]: {{ agents_post | relative_url }}
 
-{% capture hybrid_iterator_post %}{%- post_url 2019-04-07-agents-00 -%}{% endcapture %}
+{% capture hybrid_iterator_post %}{%- post_url 2019-04-03-priority-buffer-00 -%}{% endcapture %}
 [hybrid-iterator-post]: {{ hybrid_iterator_post | relative_url }}

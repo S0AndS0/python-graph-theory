@@ -199,14 +199,12 @@ for agent in agents.values():
 
 
 ```python
-count = 0
 agent_key = 'Bill'
-
-for step in agents[agent_key]:
-    name = step['name']
-    here = step['point']['address']
-    there = step['heading'].keys()[0]
-    cost = step['heading'][there]
+name = agents[agent_key]['name']
+for i, _ in enumerate(agents[agent_key]):
+    here = agents[agent_key]['point']['address']
+    there = agents[agent_key]['heading'].keys()[0]
+    cost = agents[agent_key]['heading'][there]
 
     print("{name} paid {cost} to get from {here} to {there}".format(
         name = name, cost = cost,
@@ -216,11 +214,10 @@ for step in agents[agent_key]:
     #     Agent moving from `Point`-to-`Point`
     points[here]['population'].remove(name)
     points[there]['population'].append(name)
-    step['visited'].append({there: cost})
-    step['point'] = points[there]
+    agents[agent_key]['visited'].append({there: cost})
+    agents[agent_key]['point'] = points[there]
 
-    count += 1
-    if count > 4:
+    if i > 4:
         raise Exception("Hunt for bugs!")
 
 
@@ -239,7 +236,7 @@ print("\tPaid in {total} for travel costs".format(
 ```
 
 
-> That _safety_ looping with `count` is a good habit to get into when testing a `class`s' iterative behavior; without it one of the many loops _could_ run indefinitely from some bug or uncaught _edge case_.
+> That _safety_ looping with `i` and `enumerate` is a good habit to get into when testing a `class`s' iterative behavior; without it one of the many loops _could_ run indefinitely from some bug or uncaught _edge case_. Not completely impossible to get stuck, just more difficult to mess-up.
 >
 > If/when that happens, a loop that never ends, try _mashing_ `Ctrl^c` for a bit, or searching for the Process ID so that it can be terminated with _`kill -9 <PID>`_.
 
@@ -293,7 +290,7 @@ print(d['d']['d'])
 # -> {'d': {...}}
 ```
 
-... thankfully Python's kind enough to not try and print the inner values when things like this happen; __but__ don't count on it!
+... thankfully Python's kind enough to not try and print the inner values when things like this happen; __but__ don't count on it!... especially with other languages.
 
 
 Some might wonder then why I'd even assign references of `point`s within an `Agent`... It's a matter of future convenience, I think an `Agent` _should_ be able to gather information about their surroundings, eg. `population`, and allowing'em access to that info makes modeling behaviors of agents a bit easier.

@@ -7,13 +7,14 @@ categories: graph
 {%- include mathjax.html -%}
 
 
-> If this is your first time here it might be a good idea to start at the [start][root-post] of this series.
+> If this is your first time here it might be a good idea to start at the [start][root-post] of this series; there be **_spoilers_** _ahead_!
 
 ___
 
 
 It is now time to try and _stitch_ everything together! Not quite the _finish line_ but it should be _in sight_.
 
+In this post I'll be adding `graphs/__init__.py` which'll contain the `Graph` base `class`.
 
 > As a refresher here's a _sketch_ of `Hybrid_Iterator`'s `super` relationships with `dict` and `Iterator` `class`es
 
@@ -38,7 +39,15 @@ $$
 \color{#00A}{\fbox{ Iterator }}
 $$
 
-> And here's a _sketch_ of what the following code hopes to build
+> The project's file path _structure_ may look something like...
+
+```
+graphs/points/__init__.py
+graphs/points/construction.py
+graphs/agents/__init__.py
+```
+
+> Here's a _sketch_ of what the following code hopes to build
 
 $$
 \color{#2E8B57}{\fbox{ Hybrid~Iterator }{
@@ -53,10 +62,10 @@ $$
 $$
 
 
-> Don't get too caught-up with that bit going on with `__init__` and the `add_agent`, and `add_point` methods; get to the example usage and it should become much clearer, really the _star_ of this _show_ is the `set_travel_plans` method ;-)
+> Don't get too caught-up with that bit going on with `__init__` and the `add_agent`, and `add_point` methods, get to the example usage and it should become much clearer; really the _star_ of this _show_ is the `set_travel_plans` method ;-)
 
 
-### `graph/__init__.py`
+### `graphs/__init__.py`
 
 
 ```python
@@ -121,6 +130,8 @@ class Graph(Hybrid_Iterator):
         """
         Assigns `self['travel_plans']` by calling `next()` on each of `agents`
 
+        Example: `{'Bill': Agent(name='Bill', ...), ...}`, __or__ `{}`
+
         ## Arguments
         - `agents`; should be a `{key: Agent()}` `dict`ionary
 
@@ -176,11 +187,11 @@ if __name__ == '__main__':
 ```
 
 
-Provided that the above was saved somewhere like `graph/__init__.py` it could be imported via...
+Provided that the above was saved somewhere like `graphs/__init__.py` it could be imported via...
 
 
 ```python
-from graph import Graph
+from graphs import Graph
 ```
 
 
@@ -193,9 +204,9 @@ X, O = (0.2, 0.7)
 
 graph = Graph(
     agents = {
-        'Bob': 'u',
+        'Bill': 'u',
         'Alice': 'u',
-        'Tom': 'v',
+        'Ted': 'v',
         'Jain': 'w'
     },
     points = {
@@ -211,8 +222,6 @@ And now time to use it with a _safety_ loop....
 
 ```python
 count = 0
-
-
 for _ in graph:
     count += 1
     if count > 5:
@@ -226,28 +235,26 @@ Which _should_ result if output very similar to...
 
 
 ```
-Bob traveling from u to w paying 0.2
+Bill traveling from u to w paying 0.2
 Alice traveling from u to v paying 0.2
 Jain traveling from w to u paying 0.7
-Tom traveling from v to u paying 0.7
+Ted traveling from v to u paying 0.7
 ## 0 _________
-# ...
-Bob traveling from u to v paying 0.2
+# ... Trimmed for brevity...
+Bill traveling from u to v paying 0.2
 Alice traveling from w to u paying 0.7
 Jain traveling from v to w paying 0.2
-Tom traveling from v to w paying 0.2
+Ted traveling from v to w paying 0.2
 ## 2 _________
-Moved Bob to off_duty
+Moved Bill to off_duty
 Moved Alice to off_duty
 Moved Jain to off_duty
-Moved Tom to off_duty
+Moved Ted to off_duty
 ## 3 _________
 ```
 
 
-**_Excellent_** it didn't hit the `Hunt for bugs` `Exception` and successfully moved the `Agent`s about!
-
-Not quite fully _fleshed out_ but with a bit of _lurching_ it's getting closer to something that will model graph related problems in an organized fashion.
+**_Excellent_** it didn't hit the `Hunt for bugs` `Exception` and successfully moved the `Agent`s about! While not quite fully _fleshed out_, with a bit of _lurching_ it's getting closer to something that will model graph related problems in an organized fashion.
 
 
 {% capture root_post %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
