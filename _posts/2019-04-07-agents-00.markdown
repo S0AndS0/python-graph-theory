@@ -88,7 +88,7 @@ class Agent(Hybrid_Iterator):
         If multiple choices are available a random one is picked.
         """
         if not routes:
-            routs = self['point'].cheapest()
+            routs = self['point']['neighbors']
 
         self['heading'] = {}
         courses = {}
@@ -113,10 +113,10 @@ class Agent(Hybrid_Iterator):
 
     def next(self):
         """
-        Calls `self.set_heading()` `raises` a `GeneratorExit`
+        Calls `self.set_heading()`, `raises` a `GeneratorExit`
         when there is no where left to go.
         """
-        self.set_heading()
+        self.set_heading(routes = self['point']['neighbors'])
 
         if not self['heading']:
             self.throw(GeneratorExit)
