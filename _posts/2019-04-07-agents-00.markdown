@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
 > By separating out the behavior of an `Agent` from the `next` calls, sub-classing custom a new agent with a different `set_heading` method _should_ be relatively easy, and not require too much editing of code further up the stack.
 >
-> Hint, by sub-classing and borrowing the `cheapest` of `routs` method from the `Point` class it's possible to make a _`Frugal_Agent`_, here's a really quick example of what that could look like...
+> Hint, making a _`Frugal_Agent`_ is even easier, here's a really quick example of what that could look like...
 
 
 ```python
@@ -136,8 +136,8 @@ from graph.agents import Agent
 class Frugal_Agent(Agent):
     def next(self):
         neighbors = self['point']['neighbors']
-        cheapest = self['point'].cheapest(neighbors)
-        self.set_heading(cheapest)
+        cheapest = self['point'].cheapest(routs = neighbors)
+        self.set_heading(routes = cheapest)
 
         if not self['heading']:
             self.throw(GeneratorExit)
@@ -162,6 +162,7 @@ from graph.agents import Agent
 
 X = 0.2
 O = 0.7
+
 points = {
     'u': Point(address = 'u', neighbors = {'v': X, 'w': X}),
     'v': Point(address = 'v', neighbors = {'u': O, 'w': X}),
@@ -176,7 +177,7 @@ Initializing a set of four `Agents` could then look like...
 agents = {
     'Bill': Agent(name = 'Bill', point = points['u']),
     'Alice': Agent(name = 'Alice', point = points['u']),
-    'Tom': Agent(name = 'Tom', point = points['v']),
+    'Ted': Agent(name = 'Ted', point = points['v']),
     'Jain': Agent(name = 'Jain', point = points['w']),
 }
 ```
@@ -191,7 +192,7 @@ for agent in agents.values():
 ```
 
 
-> ... though that does then require updating a `Point`'s population every-time an `Agent` wants to move, that would be ontop of updating an `Agent`'s reference to a `Point` too. And definitely read the `Warning` latter on in this post about recursion limits.
+> ... though that does then require updating a `Point`'s population every-time an `Agent` wants to move; that would be on-top of updating an `Agent`'s reference to a `Point` too. And definitely read the __`Warning`__ later on in this post about recursion limits.
 
 
 ... and letting `Bill` _wander about_, safely, could look like...
@@ -208,11 +209,11 @@ for step in agents[agent_key]:
     cost = step['heading'][there]
 
     print("{name} paid {cost} to get from {here} to {there}".format(
-        name = name,
-        cost = cost,
-        here = here,
-        there = there))
+        name = name, cost = cost,
+        here = here, there = there))
 
+    # ... update various states to simulate an
+    #     Agent moving from `Point`-to-`Point`
     points[here]['population'].remove(name)
     points[there]['population'].append(name)
     step['visited'].append({there: cost})
@@ -223,14 +224,22 @@ for step in agents[agent_key]:
         raise Exception("Hunt for bugs!")
 
 
-print("Places that {0} has been -> {1}\n\tcurrently at -> at {2}".format(
-    agents[agent_key]['name'],
-    agents[agent_key]['visited'],
-    agents[agent_key]['point']['address']))
+# ... `print` about the adventure Bill had
+print("Places that {name} has visited -> {visited}".format(
+    name = agents[agent_key]['name'],
+    visited = agents[agent_key]['visited']
+))
+
+print("\tCurrently at -> {there}".format(
+    there = there))
+
+print("\tPaid in {total} for travel costs".format(
+    total = sum([sum(x.values()) for x in agents[agent_key]['visited']])
+))
 ```
 
 
-> This _safety_ looping with `count` is a good habit to get into when testing a `class`s' iterative behavior; without it one of the many `for` loops _could_ loop indefinitely from some bug or uncaught _edge case_.
+> That _safety_ looping with `count` is a good habit to get into when testing a `class`s' iterative behavior; without it one of the many loops _could_ run indefinitely from some bug or uncaught _edge case_.
 >
 > If/when that happens, a loop that never ends, try _mashing_ `Ctrl^c` for a bit, or searching for the Process ID so that it can be terminated with _`kill -9 <PID>`_.
 
@@ -239,14 +248,55 @@ print("Places that {0} has been -> {1}\n\tcurrently at -> at {2}".format(
 
 
 ```
-Bill paid 0.2 to get from u to v
-Bill paid 0.2 to get from v to w
-Places that Bill has been -> [{'v': 0.2}, {'w': 0.2}]
-    currently at -> w
+Bill paid 0.2 to get from u to w
+Bill paid 0.2 to get from w to v
+Bill paid 0.7 to get from v to u
+Places that Bill has visited -> [{'w': 0.2}, {'v': 0.2}, {'u': 0.7}]
+        Currently at -> u
+        Paid in 1.1 for travel costs
 ```
 
 
-Next up is addressing how to move more than one agent at a time, when you're ready feel free to start in on the [graph series][graph].
+... and not hitting the _safety_ `Exception` means that things are working as designed!
+
+
+This is probably a good place to pause and experiment with the `class`es so far introduced. Perhaps consider making a slightly _absent minded_ agent, one that randomly _forgets_ where they've been but not the costs, eg. `agents['Ted']['visited']` $\implies$ `list({'somewhere': 1.8}, {'u': 0.2}, ...)`, and see what kinds of _excellent adventures_ your agents can have.
+
+
+When you're ready I've begun covering one way of constructing a [`Graph`][graph] class that enables moving more than one `Agent` at a time.
+
+
+## Warnings
+
+
+What I did there by assigning a full reference to a point within an `Agent`, eg. `agents['Bill']['point']` $\implies$ `points['u']`, is __dangerous__!
+
+
+Not used on it's own, but let's suppose at some point ya thought it would be a _good idea_ to do the same with a `point`'s `population` `list`ing, eg. `points['u']['population']` $\implies$ `list([agents['Bill'], agents['Alice']])`... and let's also suppose that the other bits of code to make that happen where patched without needing to debug... at the time everything _might_ work.
+
+
+__But__ at some point later in the future someone __will__ (maybe you maybe not), _dump_ an instance of `agent` __or__ `point`, and get less than helpful results. Here's a quick example of how _messy_ things can get when references self refer...
+
+
+```python
+d = {'d': {}}
+print(d)
+# -> {'d': {}}
+
+d.update({'d': d})
+# ... uhhoh...
+print(d)
+# -> {'d': {...}}
+print(d['d'])
+# -> {'d': {...}}
+print(d['d']['d'])
+# -> {'d': {...}}
+```
+
+... thankfully Python's kind enough to not try and print the inner values when things like this happen; __but__ don't count on it!
+
+
+Some might wonder then why I'd even assign references of `point`s within an `Agent`... It's a matter of future convenience, I think an `Agent` _should_ be able to gather information about their surroundings, eg. `population`, and allowing'em access to that info makes modeling behaviors of agents a bit easier.
 
 
 {% capture points_series %}{%- post_url 2019-04-02-points-00-preface -%}{% endcapture %}
