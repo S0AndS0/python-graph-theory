@@ -11,6 +11,11 @@ from graph.agents import Agent
 f_line = "".join(['_' for x in range(9)])
 
 
+"""
+Initializing `agents` and `points` containers
+"""
+
+
 print("{0}\nInitializing points of graph".format(f_line))
 X, Y = (0.2, 0.7)
 points = {
@@ -23,13 +28,18 @@ print("{0}\n{1}".format(points, f_line))
 agents = {
     'Bill': Agent(name = 'Bill', point = points['u']),
     'Alice': Agent(name = 'Alice', point = points['u']),
-    'Tom': Agent(name = 'Tom', point = points['v']),
+    'Ted': Agent(name = 'Ted', point = points['v']),
     'Jain': Agent(name = 'Jain', point = points['w']),
 }
 
 
 for agent in agents.values():
     agent['point']['population'].append(agent['name'])
+
+
+"""
+Have `Bill` walk it out...
+"""
 
 
 count = 0
@@ -57,7 +67,12 @@ for step in agents[agent_key]:
         raise Exception("Hunt for bugs!")
 
 
-print("Places that {0} has been -> {1}\n\tcurrently -> at {2}".format(
-    agents[agent_key]['name'],
-    agents[agent_key]['visited'],
-    agents[agent_key]['point']['address']))
+print("Places that {name} has visited -> {visited}".format(
+    name = agents[agent_key]['name'],
+    visited = agents[agent_key]['visited']))
+
+print("\tCurrently at -> {there}".format(
+    there = there))
+
+print("\tPaid in {total} for travel costs".format(
+    total = sum([sum(x.values()) for x in agents[agent_key]['visited']])))

@@ -27,19 +27,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 f_line = "".join(['_' for x in range(9)])
 
-X, O = (0.2, 0.7)
-graph = Graph(
-    agents = {
-        'Bob': 'u',
-        'Alice': 'u',
-        'Tom': 'v',
-        'Jain': 'w'
-    },
-    points = {
-        'u': {'v': X, 'w': X},
-        'v': {'u': O, 'w': X},
-        'w': {'u': O, 'v': X},
-    })
+
+"""
+Convenience functions
+"""
 
 
 def dump_points(graph):
@@ -57,8 +48,34 @@ def dump_off_duty(graph):
         print("{0} -> {1}".format(name, agent))
 
 
+"""
+Initializing `graph` and state inspection
+"""
+
+
+X, O = (0.2, 0.7)
+graph = Graph(
+    agents = {
+        'Bob': 'u',
+        'Alice': 'u',
+        'Ted': 'v',
+        'Jain': 'w'
+    },
+    points = {
+        'u': {'v': X, 'w': X},
+        'v': {'u': O, 'w': X},
+        'w': {'u': O, 'v': X},
+    })
+
+
 dump_points(graph)
 dump_agents(graph)
+
+
+"""
+Observe the _little computer people_ move about the `graph`
+"""
+
 
 count = 0
 print("## {0} {1}".format(count, f_line))
